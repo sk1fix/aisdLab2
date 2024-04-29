@@ -1,0 +1,4 @@
+D:/Ycheba/aisdLab2/out/build/x64-Debug/CMakeFiles/picture.dir
+D:/Ycheba/aisdLab2/out/build/x64-Debug/CMakeFiles/console.dir
+D:/Ycheba/aisdLab2/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+D:/Ycheba/aisdLab2/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
