@@ -17,9 +17,18 @@ namespace Hash {
     private:
         vector<HashElement<K, T>> table;
         int capacity;
-        unsigned int hashFunction(K key) {
-            unsigned int temp = std::hash<K>{}(key);
-            return (temp * 2654435761) % capacity;
+        size_t hashFunction(const K& key) {
+            float i = 0.5938475;
+            size_t temp = 0;
+            if constexpr (is_same<K, string>) {
+                for (auto c : key) {
+                    temp += static_cast<int>(c);
+                }
+                return static_cast<size_t>((temp % table.size() + static_cast<size_t>(i)) % table.size());
+            }
+            else {
+                return static_cast<size_t>((key % table.size() + static_cast<size_t>(i)) % table.size());
+            }
         }
     public:
         HashTable(int size) : capacity(size) {
