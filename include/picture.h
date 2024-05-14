@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <random>
 #include <functional>
 #include <stdexcept>
 using namespace std;
@@ -31,12 +32,18 @@ namespace Hash {
                 return static_cast<size_t>((key % table.size() + static_cast<size_t>(i)) % table.size());
             }
         }
-        void copyHash(const HashTable& other) {
-            
-        }
     public:
         HashTable(int size) : capacity(size) {
             table.resize(capacity);
+        }
+        HashTable(int size, int a, int b) : capacity(size) {
+            table.resize(capacity);
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<int> distribution(a, b);
+            for (int i = 0; i < size; i++) {
+                insert(i, distribution(gen));
+            }
         }
         HashTable(const HashTable& other) {
             capacity = other.capacity;
@@ -97,8 +104,7 @@ namespace Hash {
             throw out_of_range("Key not found in the hash table.");
         }
         int count(K key) {
-            /*size_t index = hashFunction(key);*/
-            size_t res = 0;
+            int res = 0;
             for (auto c : table) {
                 if (c.key == key) {
                     res++;
@@ -106,5 +112,15 @@ namespace Hash {
             }
             return res;
         }
+        int duplicates_count() {
+            int temp = 0;
+            for (auto c : table) {
+                if (count(c.key) > 1) {
+                    temp++;
+                }
+            }
+            return temp;
+        }
     };
+
 }

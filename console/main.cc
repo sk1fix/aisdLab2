@@ -27,5 +27,8 @@ int main()
     catch (const out_of_range& e) {
         cerr << e.what() << endl;
     }
+    HashTable<int, int> rnd(10, -1983, 9237);
+    rnd.print();
+    cout << rnd.duplicates_count() << endl;
     return 0;
 }
