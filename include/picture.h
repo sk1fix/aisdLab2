@@ -20,17 +20,17 @@ namespace Hash {
         vector<HashElement<K, T>> table;
         int capacity;
         size_t hashFunction(const K& key) {
-            float i = 0.59384;
             size_t temp = 0;
             if constexpr (is_same_v<K, string>) {
                 for (auto c : key) {
-                    temp += int(c);
+                    temp += static_cast<size_t>(c);
                 }
-                return static_cast<size_t>((temp % table.size() + static_cast<size_t>(i)) % table.size());
             }
             else {
-                return static_cast<size_t>((key % table.size() + static_cast<size_t>(i)) % table.size());
+                temp = static_cast<size_t>(key);
             }
+            float i = 0.59384;
+            return (temp + static_cast<size_t>(i)) % table.size();
         }
     public:
         HashTable(int size) : capacity(size) {
@@ -96,7 +96,7 @@ namespace Hash {
             size_t index = hashFunction(key);
             while (table[index].filled) {
                 if (table[index].key == key) {
-                    table[index].filled = false;
+                    table[index] = HashElement<K, T>();
                     return;
                 }
                 index = (index + 1) % capacity;
@@ -113,13 +113,33 @@ namespace Hash {
             return res;
         }
         int duplicates_count() {
-            int temp = 0;
-            for (auto c : table) {
-                if (count(c.key) > 1) {
-                    temp++;
+            int duplicate_count = 0;
+
+            for (size_t i = 0; i < table.size(); ++i) {
+                if (table[i].filled) {
+                    int count = 0;
+                    for (size_t j = i; j < table.size(); ++j) {
+                        if (table[j].filled && table[j].value == table[i].value) {
+                            count++;
+                        }
+                    }
+                    if (count > 1) {
+                        duplicate_count += count - 1;
+                        for (size_t j = 0; j < table.size(); ++j) {
+                            if (table[j].filled && table[j].value == table[i].value) {
+                                table[j].filled = false;
+                            }
+                        }
+                    }
                 }
             }
-            return temp;
+            for (size_t i = 0; i < table.size(); ++i) {
+                if (!table[i].filled && table[i].value != T()) {
+                    table[i].filled = true;
+                }
+            }
+
+            return duplicate_count;
         }
     };
 
