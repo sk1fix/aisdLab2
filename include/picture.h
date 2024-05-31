@@ -10,9 +10,10 @@ namespace Hash {
     struct HashElement {
         K key;
         T value;
-        bool filled;
-        HashElement() : key(K()), value(T()), filled(false) {}
-        HashElement(K _key, T _value) : key(_key), value(_value), filled(false) {}
+        string filled;
+        HashElement() : key(K()), value(T()), filled("false") {}
+        HashElement(K _key, T _value) : key(_key), value(_value), filled("true") {}
+        HashElement(K _key, T _value, string flag) : key(_key), value(_value), filled(flag) {}
     };
     template<typename K, typename T>
     class HashTable {
@@ -62,12 +63,12 @@ namespace Hash {
         }
         void insert(K key, T value) {
             size_t index = hashFunction(key);
-            while (table[index].filled) {
+            while (table[index].filled != "false") {
                 index = (index + 1) % capacity;
             }
             table[index].key = key;
             table[index].value = value;
-            table[index].filled = true;
+            table[index].filled = "true";
         }
         bool contains(T value) {
             for (auto c : table) {
@@ -84,8 +85,8 @@ namespace Hash {
         }
         T search(K key) {
             size_t index = hashFunction(key);
-            while (table[index].filled) {
-                if (table[index].key == key) {
+            while (table[index].filled != "false") {
+                if (table[index].key == key && table[index].filled == "true") {
                     return table[index].value;
                 }
                 index = (index + 1) % capacity;
@@ -94,9 +95,11 @@ namespace Hash {
         }
         void erase(K key) {
             size_t index = hashFunction(key);
-            while (table[index].filled) {
+            while (table[index].filled != "false") {
                 if (table[index].key == key) {
-                    table[index] = HashElement<K, T>();
+                    table[index].key = K();
+                    table[index].value = T();
+                    table[index].filled = "deleted";
                     return;
                 }
                 index = (index + 1) % capacity;
@@ -114,28 +117,27 @@ namespace Hash {
         }
         int duplicates_count() {
             int duplicate_count = 0;
-
             for (size_t i = 0; i < table.size(); ++i) {
-                if (table[i].filled) {
+                if (table[i].filled == "true") {
                     int count = 0;
                     for (size_t j = i; j < table.size(); ++j) {
-                        if (table[j].filled && table[j].value == table[i].value) {
+                        if (table[j].filled == "true" && table[j].value == table[i].value) {
                             count++;
                         }
                     }
                     if (count > 1) {
                         duplicate_count += count - 1;
                         for (size_t j = 0; j < table.size(); ++j) {
-                            if (table[j].filled && table[j].value == table[i].value) {
-                                table[j].filled = false;
+                            if (table[j].filled == "true" && table[j].value == table[i].value) {
+                                table[j].filled = "false";
                             }
                         }
                     }
                 }
             }
             for (size_t i = 0; i < table.size(); ++i) {
-                if (!table[i].filled && table[i].value != T()) {
-                    table[i].filled = true;
+                if (table[i].filled == "false" && table[i].value != T()) {
+                    table[i].filled = "true";
                 }
             }
 
