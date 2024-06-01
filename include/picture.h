@@ -120,14 +120,14 @@ namespace Hash {
             for (size_t i = 0; i < table.size(); ++i) {
                 if (table[i].filled == "true") {
                     int count = 0;
-                    for (size_t j = i; j < table.size(); ++j) {
+                    for (size_t j = i + 1; j < table.size(); ++j) {
                         if (table[j].filled == "true" && table[j].value == table[i].value) {
                             count++;
                         }
                     }
                     if (count > 1) {
                         duplicate_count += count - 1;
-                        for (size_t j = 0; j < table.size(); ++j) {
+                        for (size_t j = i + 1; j < table.size(); ++j) {
                             if (table[j].filled == "true" && table[j].value == table[i].value) {
                                 table[j].filled = "false";
                             }
