@@ -93,6 +93,22 @@ namespace Hash {
             }
             throw out_of_range("Key not found in the hash table.");
         }
+        void insert_or_assign(K key, T value) {
+            if (count(key)) {
+                size_t index = hashFunction(key);
+                table[index].value = value;
+            }
+            else {
+                size_t index = hashFunction(key);
+                while (table[index].filled != "false") {
+                    index = (index + 1) % capacity;
+                }
+                table[index].key = key;
+                table[index].value = value;
+                table[index].filled = "true";
+            }
+        }
+
         void erase(K key) {
             size_t index = hashFunction(key);
             while (table[index].filled != "false") {

@@ -1,0 +1,8 @@
+# ninja log v5
+56	599	7389382926050556	CMakeFiles/picture.dir/src/picture.cc.obj	14a3aae2cdd1de
+63	2415	7389382944161607	CMakeFiles/console.dir/console/main.cc.obj	a4fbe2a353b28b8f
+601	3567	7389382953876796	picture.dll	449a54899ecc31fb
+601	3567	7389382953876796	picture.lib	449a54899ecc31fb
+3567	4625	7389382965455026	console.exe	9a2c123615f84b1a
+30	2297	7389387922784039	CMakeFiles/console.dir/console/main.cc.obj	a4fbe2a353b28b8f
+2298	2976	7389387928071003	console.exe	9a2c123615f84b1a

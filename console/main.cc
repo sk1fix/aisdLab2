@@ -12,8 +12,9 @@ int main()
     ht.insert(3, "dbn");
     ht.insert(84, "Twgriho");
     ht.insert(8, "dbn");
+    ht.print();
     ht.insert(45, "Twgriho");
-    ht.insert(8, "dbn");
+    ht.insert_or_assign(8, "dblkjhn");
     ht.insert(9, "Twgriho");
     ht.print();
     cout << ht.contains("dbn") << endl;
